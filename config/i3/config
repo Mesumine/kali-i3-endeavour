@@ -398,7 +398,7 @@ exec --no-startup-id ~/.screenlayout/monitor.sh
 # set wallpaper
 # exec --no-startup-id sleep 2 && nitrogen --restore
 #exec_always --no-startup-id sleep 1 && feh --bg-fill /home/thomas/Downloads/wallpaper.jpg
-exec_always feh --bg-fill ~/Downloads/wallpaper.jpg
+exec_always feh --bg-fill ~/.config/wallpaper
 
 # set powersavings for display:
 exec --no-startup-id xset s 480 dpms 600 600 600
