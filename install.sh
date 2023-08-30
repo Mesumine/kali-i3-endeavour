@@ -42,7 +42,7 @@ while getopts "habc:mvV" opt; do
         ;;
         c)  
             while read package; do
-                if [[ "${all[*]} " =~ "${package}" ]]; then
+                if [[ "${all[*]} " =$HOME "${package}" ]]; then
                     selection+=("$package") 
                 else
                     echo -e "package: $package is not valid!"
@@ -68,48 +68,49 @@ echo "${selection[@]}" |  xargs sudo apt-get install -y
 
 
 ## Basic Configuration
-tar -czf .config.bak ~/.config 
-cp -r config/* ~/.config/
-chmod +x ~/.config/i3/scripts/*
-mv ~/.zshrc ~/zshrc.bak
-cp zshrc ~/.zshrc 
+tar -czf .config.bak $HOME/.config 
+cp -r config/* $HOME/.config/
+chmod +x $HOME/.config/i3/scripts/*
+mv $HOME/.zshrc $HOME/zshrc.bak
+cp zshrc $HOME/.zshrc 
 
 ##vm Configuration
-if [ vm -eq 1 ] then
+if [ "$vm" -eq 1 ]; then
     echo "making i3 configuration more VM friendly"
-    sed -i "s/mod+g/mod+Shift+g/g" ~/.config/i3/config 
-    sed -i "s/mod+l/mod+Shift+l/g" ~/.config/i3/config 
+    sed -i "s/mod+g/mod+Shift+g/g" $HOME/.config/i3/config 
+    sed -i "s/mod+l/mod+Shift+l/g" $HOME/.config/i3/config 
     echo "Changing i3 config to use 'mod+Shift+g' for tabbed mode"
-    sed -i "s/+g/mod+Shift+g/g" ~/.config/i3/keybindings 
-    sed -i "s/+l/mod+Shift+l/g" ~/.config/i3/keybindings 
+    sed -i "s/+g/mod+Shift+g/g" $HOME/.config/i3/keybindings 
+    sed -i "s/+l/mod+Shift+l/g" $HOME/.config/i3/keybindings 
     echo "Changing i3 config to use 'mod+Shift+l' for lock screen" 
 fi 
 
 ## alt bindkey
-if [ mod -eq 1 ] then
+if [ "$mod" -eq 1 ]; then
     echo "Changing mod key to Alt"
-    sed -i "s/Mod4/Mod1/g" ~/.config/i3/config 
-    sed -i "s/windows key/alt key/g" ~/.config/i3/keybindings
+    sed -i "s/Mod4/Mod1/g" $HOME/.config/i3/config 
+    sed -i "s/windows key/alt key/g" $HOME/.config/i3/keybindings
 fi 
 #flameshot
 
-if [[ "${selection[*]} " =~ "flameshot" ]]; then
+if [[ "${selection[*]} " =$HOME "flameshot" ]]; then
     echo "rebinding Print key to flameshot"
-    sed "s/bindsym Print.*/bindsym Print exec flameshot gui"
+    sed -i "s/bindsym Print.*/bindsym Print exec flameshot gui"
 fi 
 
 ## picom 
-if [[ "${selection[*]} " =~ "picom" ]]; then
+if [[ "${selection[*]} " =$HOME "picom" ]]; then
     echo "Setting up transparent terminals"
-    mkdir ~/.config/picom 
-    cp optional/picom.conf ~/.config/picom/picom.conf 
-    sed -i '/picom.conf/s/^#//g' ~/.config/i3/config
+    mkdir $HOME/.config/picom 
+    cp optional/picom.conf $HOME/.config/picom/picom.conf 
+    sed -i '/picom.conf/s/^#//g' $HOME/.config/i3/config
 fi 
 
 
 ## nvim  
-if [[ "${selection[*]} " =~ "nvim" ]]; then
+if [[ "${selection[*]} " =$HOME "nvim" ]]; then
     echo "Copying nvim configuration"
-    cp -r optional/nvim ~/.config 
+    mkdir $HOME/.config/nvim 
+    cp -r optional/nvim/* $HOME/.config/nvim 
 fi 
 
