@@ -93,13 +93,13 @@ if [ "$mod" -eq 1 ]; then
 fi 
 #flameshot
 
-if [[ "${selection[*]} " =$HOME "flameshot" ]]; then
+if [[ "${selection[*]} " =~ "flameshot" ]]; then
     echo "rebinding Print key to flameshot"
     sed -i "s/bindsym Print.*/bindsym Print exec flameshot gui"
 fi 
 
 ## picom 
-if [[ "${selection[*]} " =$HOME "picom" ]]; then
+if [[ "${selection[*]} " =~ "picom" ]]; then
     echo "Setting up transparent terminals"
     mkdir $HOME/.config/picom 
     cp optional/picom.conf $HOME/.config/picom/picom.conf 
@@ -108,7 +108,7 @@ fi
 
 
 ## nvim  
-if [[ "${selection[*]} " =$HOME "nvim" ]]; then
+if [[ "${selection[*]} " =~ "nvim" ]]; then
     echo "Copying nvim configuration"
     mkdir $HOME/.config/nvim 
     cp -r optional/nvim/* $HOME/.config/nvim 
