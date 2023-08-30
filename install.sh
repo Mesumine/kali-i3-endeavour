@@ -42,7 +42,7 @@ while getopts "habc:mvV" opt; do
         ;;
         c)  
             while read package; do
-                if [[ "${all[*]} " =$HOME "${package}" ]]; then
+                if [[ "${all[*]} " =~ "${package}" ]]; then
                     selection+=("$package") 
                 else
                     echo -e "package: $package is not valid!"
