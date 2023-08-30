@@ -67,7 +67,10 @@ floating_modifier $mod
 
 # switch/iterate between workspaces
 bindsym $mod+Tab workspace next
+bindsym $mod+control+right workspace next
+
 bindsym $mod+Shift+Tab workspace prev
+bindsym $mod+Shift+left workspace prev
 
 # switch to workspace
 bindsym $mod+1    workspace  $ws1
@@ -180,8 +183,6 @@ bindsym $mod+q kill
 bindsym $mod+Shift+e exec ~/.config/i3/scripts/powermenu
 
 # Lock the system
-# lock with a picture:
-#bindsym $mod+l exec i3lock -i  ~/.config/i3/i3-lock-screen.png -p default|win -t
 # lock by blurring the screen:
 bindsym $mod+l exec ~/.config/i3/scripts/blur-lock
 
@@ -288,8 +289,7 @@ bindsym $mod+p exec /usr/local/bin/switch-audio-port
 ## App shortcuts
 bindsym $mod+w exec /usr/bin/firefox
 bindsym $mod+n exec /usr/bin/thunar
-#bindsym Print exec scrot ~/%Y-%m-%d-%T-screenshot.png && notify-send "Screenshot saved to ~/$(date +"%Y-%m-%d-%T")-screenshot.png"
-bindsym Print exec flameshot gui
+bindsym Print exec scrot ~/%Y-%m-%d-%T-screenshot.png && notify-send "Screenshot saved to ~/$(date +"%Y-%m-%d-%T")-screenshot.png"
 
 
 # Power Profiles menu switcher (rofi)
@@ -352,18 +352,6 @@ set $ws10 "10"
 #exec --no-startup-id xcompmgr -c -C -t-5 -l-5 -r4.2 -o.55 &
 #
 # or:
-#
-# picom: https://wiki.archlinux.org/title/Picom
-# manpage: https://man.archlinux.org/man/picom.1.en
-# The default configuration is available in /etc/xdg/picom.conf 
-# For modifications, it can be copied to ~/.config/picom/picom.conf or ~/.config/picom.conf
-# install picom package (yay -S picom)
-# start using default config 
-#exec_always --no-startup-id picom -b
-#
-# for custom config:
-#exec_always --no-startup-id picom --config  ~/.config/picom.conf
-
 #############################################
 # autostart applications/services on login: #
 #############################################
@@ -398,7 +386,7 @@ exec --no-startup-id ~/.screenlayout/monitor.sh
 # set wallpaper
 # exec --no-startup-id sleep 2 && nitrogen --restore
 #exec_always --no-startup-id sleep 1 && feh --bg-fill /home/thomas/Downloads/wallpaper.jpg
-exec_always feh --bg-fill ~/.config/wallpaper
+exec_always --no-startup-id feh --bg-fill ~/.config/wallpaper
 
 # set powersavings for display:
 exec --no-startup-id xset s 480 dpms 600 600 600
@@ -592,5 +580,4 @@ bindsym $mod+t exec rofi -show window \
 #exec --no-startup-id greenclip daemon>/dev/null
 #bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard \
 #		-config ~/.config/rofi/rofidmenu.rasi
-exec_always --no-startup-id picom --config ~/.config/picom/picom.conf
-#exec_always feh --bg-fill ~/Downloads/wallpaper.jpg
+#exec_always --no-startup-id picom --config ~/.config/picom/picom.conf

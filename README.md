@@ -15,12 +15,43 @@ I'm a huge fan of endeavourOS and use it as my daily driver. However, I understa
 
 ## Download requirements
 
-Clone this repository and then cd into the kali-i3-endeavour folder.
+Clone this repository and then cd into the kali-i3-endeavour folder. Choose the options that you want. 
+ ```
+ -a             Install and configure all optional packages.
+ -m             Install and configure only the required packages.
+ -b             Change bind key from Windows to Alt.
+ -c <list.txt>  Install and configure the packages in the list in addition to the required packages.
+ -v             Configure towards VM. change $mod+g to $mod+Shift+g. change $mod+l to $mod+Shift+l
+ -h             Print help.
 
 ```
+git clone https://github.com/Mesumine/kali-i3-endeavour.git 
+cd kali-i3-endeavour 
 chmod +x install.sh 
-./install.sh 
 ```
+
+```
+Usage:
+'./install.sh -a'		 to install all optional programs, aimed at full installation
+'./install.sh -m -v' 		 to install only required programs, aimed at Virtual machine
+'./install.sh -c list.txt -v -b'	 to install optional programs from list, aimed at VM, with Alt as bind key
+
+ -a             Install and configure all optional packages.
+ -m             Install and configure only the required packages.
+ -b             Change bind key from Windows to Alt.
+ -c <list.txt>  Install and configure the packages in the list in addition to the required packages.
+ -v             Configure towards VM. change $mod+g to $mod+Shift+g. change $mod+l to $mod+Shift+l
+ -h             Print help.
+
+The optional programs are:
+Flameshot:	 a screen capture tool that can grab sections of the screen and edit on the fly.
+neovim:	     hyperextensible Vim-based editor. Also comes with custom config file.
+picom:	     a lightweight compositor for x11. Will be used for transparent terminals
+arandr:	     gui interface for xrandr. used for changing display settings
+
+```
+
+
 
 ## Log in with i3.
 
@@ -29,34 +60,36 @@ In order to use i3, you'll need to logout. and then click the icon in the top ri
 <p align="center">
   <img src="attachments/image2.png" width="600" title="hover text">
 </p>
+
 ## Important notes about i3
 
 ## rofi
 
 rofi powers a lot of menus in i3 to make it easier to find and open applications and to switch windows. 
 
-windows + d - brings up the rofi dmenu, where you can start typing the name of an application and then select it to open it. 
+mod + d - brings up the rofi dmenu, where you can start typing the name of an application and then select it to open it. 
 
-windows + t - brings up the list of open tiles. This works the same as the dmenu.
+mod + t - brings up the list of open tiles. This works the same as the dmenu.
 
 There are other rofi menus and features, but those are the two you will use the most.
 
 
 ## Terminal
 
-open a terminal with windows + Enter. 
+open a terminal with mod + Enter. 
 
 ## Bind key
 
-the bind key in i3 is the windows key by default. This may cause issues if using with virtualization. There are two methods to address the problem if you plan to use this in a VM. 
+the bind key in i3 is the windows key by default. This may cause issues if using with virtualization. There are two methods to address the problem if you plan to use this in a VM.
 
-- Grab keyboard input. There's usually an option in VM managers or remote desktops that allow the VM to grab keyboard input when it is focused. The following is the location in NoMachine.
+- Grab keyboard input. There's usually an option in VM managers or remote desktops that allow the VM to grab keyboard input when it is focused. The following is the location in NoMachine. The usual issue with this is that sometimes Windows still grabs certain key combinations. If you use the -v switch in this install script, it will change windows+g to windows+shift+g and windows+l to windows+shift+l.
 
 <p align="center">
   <img src="attachments/image3.png" width="1000" title="hover text">
 </p>
 
-- Change bind key to alt
+- Change bind key to alt. An approach that works in environments that cannot grab keyboard input, it is best to change the mod key to Alt. The -b switch will do this. You can do it manually later by doing the following: 
+
 in ~/.config/i3/config change
 
 `set $mod Mod4`
@@ -65,6 +98,7 @@ to
 
 `set $mod Mod1`
 
+
 ## Keybindings
 
 A keybindings cheat sheet can be found in the ~/.config/i3/keybindings file.
@@ -72,17 +106,19 @@ A keybindings cheat sheet can be found in the ~/.config/i3/keybindings file.
 
 ## Tabbed, Stacked and fullscreen modes
 
-Win + g = tabbed mode. The tiles will be put in a tab arrangement. They can still be navigated with mouse or with Win + (left|right)
+mod + g = tabbed mode. The tiles will be put in a tab arrangement. They can still be navigated with mouse or with mod + (left|right)
 
-Win + s = stacking mode. The tiles will stack on top of each other. They can still be navigated with mouse or with Win + (up|down)
+mod + s = stacking mode. The tiles will stack on top of each other. They can still be navigated with mouse or with mod + (up|down)
 
-win + e = split mode. To return to the default i3 split tile mode.
+mod + e = split mode. To return to the default i3 split tile mode.
 
-win  + f = fullscreen mode. To make a tile fill the screen and hide everything behind it. This is useful, but can be annoying when you forget that you are in it and try to open a new window or link.
+mod + f = fullscreen mode. To make a tile fill the screen and hide everything behind it. This is useful, but can be annoying when you forget that you are in it and try to open a new window or link.
 
 ## Workspaces
 
-This configuration comes with 10 workspaces by default. The can be switched to by hitting win +(num) or by scrolling up and down on the bottom bar. You can move a tile to another workspace with win + shift + (num).
+This configuration comes with 10 workspaces by default. They can be switched to by hitting mod + (num) or by scrolling up and down on the bottom bar. You can change to the next or previous workspace by using mod+tab/mod+shift+tab or mod+ctrl+(left|right)
+
+You can move a tile to another workspace with mod+shift+(num). You can also move it around with mod+shift+(left|right)
 
 If you want to alias a command to automatically open and focus something on a new workspace, use the i3-msg command. The following alias in .zshrc will open a new workspace, label it with the  , and then focus the workspace. Custom icons can be found at https://fontawesome.com/v4/cheatsheet/
 
