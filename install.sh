@@ -108,9 +108,9 @@ fi
 
 
 ## nvim  
-if [[ "${selection[*]} " =~ "neovim" ]]; then
-    echo "Copying nvim configuration"
-    mkdir $HOME/.config/nvim 
-    cp -r optional/nvim/* $HOME/.config/nvim 
-fi 
+#if [[ "${selection[*]} " =~ "neovim" ]]; then
+#    echo "Copying nvim configuration"
+#    mkdir $HOME/.config/nvim 
+#    cp -r optional/nvim/* $HOME/.config/nvim 
+#fi 
 
