@@ -17,19 +17,11 @@ I'm a huge fan of endeavourOS and use it as my daily driver. However, I understa
 
 Clone this repository and then cd into the kali-i3-endeavour folder. Choose the options that you want. 
  ```
- -a             Install and configure all optional packages.
- -m             Install and configure only the required packages.
- -b             Change bind key from Windows to Alt.
- -c <list.txt>  Install and configure the packages in the list in addition to the required packages.
- -v             Configure towards VM. change $mod+g to $mod+Shift+g. change $mod+l to $mod+Shift+l
- -h             Print help.
-
-```
 git clone https://github.com/Mesumine/kali-i3-endeavour.git 
 cd kali-i3-endeavour 
 chmod +x install.sh 
 ```
-
+## Usage 
 ```
 Usage:
 './install.sh -a'		 to install all optional programs, aimed at full installation
