@@ -126,8 +126,7 @@ if [ "$wp" -eq 1 ]; then
 
     # update xfce4-terminal 
     sudo mv /usr/bin/xfce4-terminal /opt/.xfce4-terminal.bak 
-    sudo tar xf xfce4-terminal.tar 
-    sudo cp xfce4-terminal /usr/bin/xfce4-terminal
+    sudo tar xf optional/xfce4-terminal.tar --directory=/usr/bin/
     sudo chmod +x /usr/bin/xfce4-terminal 
 
     #get root wallpaper from wallpaperflare.
