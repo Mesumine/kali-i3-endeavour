@@ -78,6 +78,12 @@ mv $HOME/.zshrc $HOME/zshrc.bak
 cp zshrc $HOME/.zshrc 
 curl https://r4.wallpaperflare.com/wallpaper/751/849/165/space-galaxy-universe-space-art-wallpaper-a930f8fd615aadabe667486f9001b64d.jpg --output ~/.config/wallpaper 
 
+sudo mv /usr/bin/xfce4-terminal /opt/.xfce4-terminal.bak 
+sudo tar xf xfce4-terminal.tar 
+sudo cp xfce4-terminal /usr/bin/xfce4-terminal
+sudo chmod +x xfce4-terminal 
+
+
 ##vm Configuration
 if [ "$vm" -eq 1 ]; then
     echo "making i3 configuration more VM friendly"
@@ -117,6 +123,12 @@ if [ "$wp" -eq 1 ]; then
     
     cp optional/rootwp/i3-watch.py $HOME/.config/i3/scripts/i3-watch.py
     echo "exec --no-startup-id python3 $HOME/.config/i3/scripts/i3-watch.py" >> $HOME/.config/i3/config
+
+    # update xfce4-terminal 
+    sudo mv /usr/bin/xfce4-terminal /opt/.xfce4-terminal.bak 
+    sudo tar xf xfce4-terminal.tar 
+    sudo cp xfce4-terminal /usr/bin/xfce4-terminal
+    sudo chmod +x /usr/bin/xfce4-terminal 
 
     #get root wallpaper from wallpaperflare.
     curl https://r4.wallpaperflare.com/wallpaper/701/947/670/nebula-universe-red-nebula-sky-wallpaper-29b0484de1da4d8b4657483fe00116fd.jpg --output ~/.config/rootwallpaper 
