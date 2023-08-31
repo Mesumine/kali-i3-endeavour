@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare -a packages=( "i3-wm" "i3blocks" "i3lock-fancy" "i3status" "xfce4-terminal" "rofi" "feh" )
+declare -a packages=( "i3-wm" "i3blocks" "i3lock-fancy" "i3status" "xfce4-terminal" "rofi" "feh" "xdotool" )
 declare -a optional=( "picom" "flameshot" "neovim" "arandr" )
 all=( "${packages[@]}" "${optional[@]}" )
 selection=( "${packages[@]}" )
@@ -67,7 +67,7 @@ done
 ## Install packages
 
 
-echo "${selection[@]}" |  xargs sudo apt-get install -y
+echo "${selection[@]}" |  xargs sudo apt-get install -q -y
 
 
 ## Basic Configuration
@@ -80,6 +80,7 @@ mv $HOME/.zshrc $HOME/zshrc.bak
 cp zshrc $HOME/.zshrc
 sudo mv /root/.zshrc /root/.zshrc.bak 
 sudo cp zshrc /root/.zshrc 
+sudo cp -r config/xfce4/terminal/* /root/.config/xfce4/terminal 
 curl https://r4.wallpaperflare.com/wallpaper/751/849/165/space-galaxy-universe-space-art-wallpaper-a930f8fd615aadabe667486f9001b64d.jpg --output ~/.config/wallpaper 
 
 
@@ -117,7 +118,7 @@ fi
 
 if [ "$wp" -eq 1 ]; then
     echo -e "\nConfiguring root wallpaper change on focus"
-    pip3 install i3ipc
+    pip3 install -q i3ipc
 
     sudo grep -q "class \"root\"" /root/.zshrc
     if [[ "$?" -eq 0 ]]; then
