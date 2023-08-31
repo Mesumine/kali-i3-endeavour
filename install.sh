@@ -71,19 +71,16 @@ echo "${selection[@]}" |  xargs sudo apt-get install -y
 
 
 ## Basic Configuration
-tar -czf .config.bak $HOME/.config 
+tar -czf .config.bak.tar $HOME/.config 
 cp -r config/* $HOME/.config/
+sudo tar -czf /root/.config.bak.tar /root/.config  
+sudo cp -r config/* /root/.config/
 chmod +x $HOME/.config/i3/scripts/*
 mv $HOME/.zshrc $HOME/zshrc.bak
 cp zshrc $HOME/.zshrc
 sudo mv /root/.zshrc /root/.zshrc.bak 
 sudo cp zshrc /root/.zshrc 
 curl https://r4.wallpaperflare.com/wallpaper/751/849/165/space-galaxy-universe-space-art-wallpaper-a930f8fd615aadabe667486f9001b64d.jpg --output ~/.config/wallpaper 
-
-sudo mv /usr/bin/xfce4-terminal /opt/.xfce4-terminal.bak 
-sudo tar xf xfce4-terminal.tar 
-sudo cp xfce4-terminal /usr/bin/xfce4-terminal
-sudo chmod +x xfce4-terminal 
 
 
 ##vm Configuration
@@ -119,16 +116,19 @@ if [[ "${selection[*]} " =~ "picom" ]]; then
 fi 
 
 if [ "$wp" -eq 1 ]; then
-
+    echo -e "\nConfiguring root wallpaper change on focus"
     pip3 install i3ipc
 
     sudo grep -q "class \"root\"" /root/.zshrc
-    if [[ "$?" -eq 1 ]]; then
+    if [[ "$?" -eq 0 ]]; then
         echo "rootwp already insterted into /root/.zshrc"
         return 1
     else    
         cat optional/rootwp/rootshell.txt | sudo tee -a /root/.zshrc
         cp optional/rootwp/i3-watch.py $HOME/.config/i3/scripts/i3-watch.py
+        chmod 640 $HOME/.config/i3/scripts/i3-watch.py 
+        sudo chown root:root $HOME/.config/i3/scripts/i3-watch.py 
+        
         echo "exec --no-startup-id python3 $HOME/.config/i3/scripts/i3-watch.py" >> $HOME/.config/i3/config
     fi 
 
@@ -139,7 +139,9 @@ if [ "$wp" -eq 1 ]; then
 
     #get root wallpaper from wallpaperflare.
     curl https://r4.wallpaperflare.com/wallpaper/701/947/670/nebula-universe-red-nebula-sky-wallpaper-29b0484de1da4d8b4657483fe00116fd.jpg --output ~/.config/rootwallpaper 
-fi 
+    chmod 640 $HOME/.config/rootwallpaper
+    sudo chown root:root $HOME/.config/rootwallpaper
+fi  
 
 echo -e "\n\n Configuration complete, please reboot your computer and select i3 at the lightdm login screen"
 ## nvim  
