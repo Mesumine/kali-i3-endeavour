@@ -1,2 +1,4 @@
 flameshot
-lol
+neovim
+picom
+arandr

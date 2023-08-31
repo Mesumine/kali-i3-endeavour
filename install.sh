@@ -7,6 +7,7 @@ selection=( "${packages[@]}" )
 min=0
 vm=0
 mod=0
+wp=0
 
 usage()
 {
@@ -25,17 +26,17 @@ usage()
     echo -e "-c <list.txt>  Install and configure the packages in the list in addition to the required packages."
     echo -e "-v             Configure towards VM. change $mod+g to $mod+Shift+g. change $mod+l to $mod+Shift+l"
     echo -e "-h             Print help."
-
-
+    echo -e "-w             Configure wallpaper to change whenever a root terminal is focused." 
 }
 
 
-while getopts "habc:mvV" opt; do 
+while getopts "habc:mvVw" opt; do 
     case ${opt} in 
         h) usage  && exit 1
         ;;
         a) 
             selection=( "${all[@]}" )
+            wp=1
         ;;
         b) 
             mod=1
@@ -52,6 +53,8 @@ while getopts "habc:mvV" opt; do
         m) min=1
         ;;
         v) vm=1
+        ;;
+        w) wp=1
         ;;
         \?) usage && exit 1
         ;;
@@ -73,6 +76,7 @@ cp -r config/* $HOME/.config/
 chmod +x $HOME/.config/i3/scripts/*
 mv $HOME/.zshrc $HOME/zshrc.bak
 cp zshrc $HOME/.zshrc 
+curl https://r4.wallpaperflare.com/wallpaper/751/849/165/space-galaxy-universe-space-art-wallpaper-a930f8fd615aadabe667486f9001b64d.jpg --output ~/.config/wallpaper 
 
 ##vm Configuration
 if [ "$vm" -eq 1 ]; then
@@ -106,7 +110,17 @@ if [[ "${selection[*]} " =~ "picom" ]]; then
     sed -i '/picom.conf/s/^#//g' $HOME/.config/i3/config
 fi 
 
+if [ "$wp" -eq 1 ]; then
 
+    pip3 install i3ipc
+    sudo cat optional/rootwp/rootshell.txt >> /root/.zshrc
+    
+    cp optional/rootwp/i3-watch.py $HOME/.config/i3/scripts/i3-watch.py
+    echo "exec --no-startup-id python3 $HOME/.config/i3/scripts/i3-watch.py" >> $HOME/.config/i3/config
+
+    #get root wallpaper from wallpaperflare.
+    curl https://r4.wallpaperflare.com/wallpaper/701/947/670/nebula-universe-red-nebula-sky-wallpaper-29b0484de1da4d8b4657483fe00116fd.jpg --output ~/.config/rootwallpaper 
+fi 
 ## nvim  
 #if [[ "${selection[*]} " =~ "neovim" ]]; then
 #    echo "Copying nvim configuration"
