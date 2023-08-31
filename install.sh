@@ -75,7 +75,9 @@ tar -czf .config.bak $HOME/.config
 cp -r config/* $HOME/.config/
 chmod +x $HOME/.config/i3/scripts/*
 mv $HOME/.zshrc $HOME/zshrc.bak
-cp zshrc $HOME/.zshrc 
+cp zshrc $HOME/.zshrc
+sudo mv /root/.zshrc /root/.zshrc.bak 
+sudo cp zshrc /root/.zshrc 
 curl https://r4.wallpaperflare.com/wallpaper/751/849/165/space-galaxy-universe-space-art-wallpaper-a930f8fd615aadabe667486f9001b64d.jpg --output ~/.config/wallpaper 
 
 sudo mv /usr/bin/xfce4-terminal /opt/.xfce4-terminal.bak 
@@ -105,7 +107,7 @@ fi
 
 if [[ "${selection[*]} " =~ "flameshot" ]]; then
     echo "rebinding Print key to flameshot"
-    sed -i "s/bindsym Print.*/bindsym Print exec flameshot gui"
+    sed -i "s/bindsym Print.*/bindsym Print exec flameshot gui/" $HOME/.config/i3/config
 fi 
 
 ## picom 
@@ -119,10 +121,16 @@ fi
 if [ "$wp" -eq 1 ]; then
 
     pip3 install i3ipc
-    sudo cat optional/rootwp/rootshell.txt >> /root/.zshrc
-    
-    cp optional/rootwp/i3-watch.py $HOME/.config/i3/scripts/i3-watch.py
-    echo "exec --no-startup-id python3 $HOME/.config/i3/scripts/i3-watch.py" >> $HOME/.config/i3/config
+
+    sudo grep -q "class \"root\"" /root/.zshrc
+    if [[ "$?" -eq 1 ]]; then
+        echo "rootwp already insterted into /root/.zshrc"
+        return 1
+    else    
+        cat optional/rootwp/rootshell.txt | sudo tee -a /root/.zshrc
+        cp optional/rootwp/i3-watch.py $HOME/.config/i3/scripts/i3-watch.py
+        echo "exec --no-startup-id python3 $HOME/.config/i3/scripts/i3-watch.py" >> $HOME/.config/i3/config
+    fi 
 
     # update xfce4-terminal 
     sudo mv /usr/bin/xfce4-terminal /opt/.xfce4-terminal.bak 
@@ -132,6 +140,8 @@ if [ "$wp" -eq 1 ]; then
     #get root wallpaper from wallpaperflare.
     curl https://r4.wallpaperflare.com/wallpaper/701/947/670/nebula-universe-red-nebula-sky-wallpaper-29b0484de1da4d8b4657483fe00116fd.jpg --output ~/.config/rootwallpaper 
 fi 
+
+echo -e "\n\n Configuration complete, please reboot your computer and select i3 at the lightdm login screen"
 ## nvim  
 #if [[ "${selection[*]} " =~ "neovim" ]]; then
 #    echo "Copying nvim configuration"
