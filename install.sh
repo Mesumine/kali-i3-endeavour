@@ -67,14 +67,19 @@ done
 ## Install packages
 
 
-echo "${selection[@]}" |  xargs sudo apt-get install -q -y
+echo "${selection[@]}" |  xargs sudo apt-get install -qq -y
 
 
 ## Basic Configuration
-tar -czf .config.bak.tar $HOME/.config 
+if [[ ! -f ~/.config.bak.tar ]]; then
+	echo "backing up ~/.config to ~/.config.bak.tar"
+	tar -czf .config.bak.tar $HOME/.config 
+fi
 cp -r config/* $HOME/.config/
-sudo tar -czf /root/.config.bak.tar /root/.config  
+if [[ ! -f ~/.config.bak.tar ]]; then
+	sudo tar -czf /root/.config.bak.tar /root/.config  
 sudo cp -r config/* /root/.config/
+fi
 chmod +x $HOME/.config/i3/scripts/*
 mv $HOME/.zshrc $HOME/zshrc.bak
 cp zshrc $HOME/.zshrc
@@ -87,12 +92,19 @@ curl https://r4.wallpaperflare.com/wallpaper/751/849/165/space-galaxy-universe-s
 ##vm Configuration
 if [ "$vm" -eq 1 ]; then
     echo "making i3 configuration more VM friendly"
-    sed -i "s/mod+g/mod+Shift+g/g" $HOME/.config/i3/config 
-    sed -i "s/mod+l/mod+Shift+l/g" $HOME/.config/i3/config 
+
     echo "Changing i3 config to use 'mod+Shift+g' for tabbed mode"
+    sed -i "s/mod+g/mod+Shift+g/g" $HOME/.config/i3/config 
+    
+    echo "Changing i3 config to use 'mod+Shift+l' for lock screen" 
+    sed -i "s/mod+l/mod+Shift+l/g" $HOME/.config/i3/config
+    
+    echo "Changing i3 config to use 'mod+\`' for Printscreen/flameshot"
+    sed -i "s/bindsym Print/bindsym \$mod+grave/g" $HOME/.config/i3/config
+    echo "updating keybindings cheat sheet" 
     sed -i "s/+g/mod+Shift+g/g" $HOME/.config/i3/keybindings 
     sed -i "s/+l/mod+Shift+l/g" $HOME/.config/i3/keybindings 
-    echo "Changing i3 config to use 'mod+Shift+l' for lock screen" 
+    sed -i "s/bindsym Print/bindsym \$mod+\`/g" $HOME/.config/i3/keybindings
 fi 
 
 ## alt bindkey
@@ -105,7 +117,7 @@ fi
 
 if [[ "${selection[*]} " =~ "flameshot" ]]; then
     echo "rebinding Print key to flameshot"
-    sed -i "s/bindsym Print.*/bindsym Print exec flameshot gui/" $HOME/.config/i3/config
+    sed -i "s/exec scrot.*/exec flameshot gui/" $HOME/.config/i3/config
 fi 
 
 ## picom 
@@ -113,6 +125,7 @@ if [[ "${selection[*]} " =~ "picom" ]]; then
     echo "Setting up transparent terminals"
     mkdir $HOME/.config/picom 
     cp optional/picom.conf $HOME/.config/picom/picom.conf 
+    #uncomment picom.conf line
     sed -i '/picom.conf/s/^#//g' $HOME/.config/i3/config
 fi 
 
@@ -127,10 +140,10 @@ if [ "$wp" -eq 1 ]; then
     else    
         cat optional/rootwp/rootshell.txt | sudo tee -a /root/.zshrc
         cp optional/rootwp/i3-watch.py $HOME/.config/i3/scripts/i3-watch.py
-        chmod 640 $HOME/.config/i3/scripts/i3-watch.py 
+        chmod 775 $HOME/.config/i3/scripts/i3-watch.py 
         sudo chown root:root $HOME/.config/i3/scripts/i3-watch.py 
         
-        echo "exec --no-startup-id python3 $HOME/.config/i3/scripts/i3-watch.py" >> $HOME/.config/i3/config
+        echo "exec_always --no-startup-id python3 $HOME/.config/i3/scripts/i3-watch.py" >> $HOME/.config/i3/config
     fi 
 
     # update xfce4-terminal 
@@ -139,9 +152,9 @@ if [ "$wp" -eq 1 ]; then
     sudo chmod +x /usr/bin/xfce4-terminal 
 
     #get root wallpaper from wallpaperflare.
-    curl https://r4.wallpaperflare.com/wallpaper/701/947/670/nebula-universe-red-nebula-sky-wallpaper-29b0484de1da4d8b4657483fe00116fd.jpg --output ~/.config/rootwallpaper 
-    chmod 640 $HOME/.config/rootwallpaper
-    sudo chown root:root $HOME/.config/rootwallpaper
+    echo "getting rootwallpaper"
+    sudo curl https://r4.wallpaperflare.com/wallpaper/701/947/670/nebula-universe-red-nebula-sky-wallpaper-29b0484de1da4d8b4657483fe00116fd.jpg --output /usr/share/rootwallpaper 
+    sudo chmod 664 /usr/share/rootwallpaper
 fi  
 
 echo -e "\n\n Configuration complete, please reboot your computer and select i3 at the lightdm login screen"
