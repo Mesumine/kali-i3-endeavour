@@ -73,6 +73,7 @@ echo "${selection[@]}" |  xargs sudo apt-get install -qq -y
 uname -a | grep parrot
 if [ $? -eq 0 ]; then
     sudo apt-get install -qq -y zsh i3-gaps
+    sudo chsh -s $(which zsh) root
 fi 
 
 ## Basic Configuration
