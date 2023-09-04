@@ -63,12 +63,17 @@ while getopts "habc:mvVw" opt; do
     esac
 done
 
-
+## update 
+sudo apt update 
 ## Install packages
-
-
 echo "${selection[@]}" |  xargs sudo apt-get install -qq -y
 
+#parrot specific configuration
+
+uname -a | grep parrot
+if [ $? -eq 0 ]; then
+    sudo apt-get install -qq -y zsh i3-gaps
+fi 
 
 ## Basic Configuration
 if [[ ! -f ~/.config.bak.tar ]]; then
@@ -133,7 +138,7 @@ if [ "$wp" -eq 1 ]; then
     echo -e "\nConfiguring root wallpaper change on focus"
     pip3 install -q i3ipc
 
-    sudo grep -q "class \"root\"" /root/.zshrc
+    sudo grep -q "role \"root\"" /root/.zshrc
     if [[ "$?" -eq 0 ]]; then
         echo "rootwp already insterted into /root/.zshrc"
         return 1
@@ -146,10 +151,11 @@ if [ "$wp" -eq 1 ]; then
         echo "exec_always --no-startup-id python3 $HOME/.config/i3/scripts/i3-watch.py" >> $HOME/.config/i3/config
     fi 
 
-    # update xfce4-terminal 
-    sudo mv /usr/bin/xfce4-terminal /opt/.xfce4-terminal.bak 
-    sudo tar xf optional/xfce4-terminal.tar --directory=/usr/bin/
-    sudo chmod +x /usr/bin/xfce4-terminal 
+    # update xfce4-terminal
+    # xfce4-terminal no longer needs to be updated for this, since we can use the window_role instead of window_class. If you want, you can have an up to date xfce4-terminal on kali.
+    #sudo mv /usr/bin/xfce4-terminal /opt/.xfce4-terminal.bak 
+    #sudo tar xf optional/xfce4-terminal.tar --directory=/usr/bin/
+    #sudo chmod +x /usr/bin/xfce4-terminal 
 
     #get root wallpaper from wallpaperflare.
     echo "getting rootwallpaper"

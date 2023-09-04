@@ -2,7 +2,7 @@ if [ ! -f /root/.lock ]; then
 	i3-msg split v
 	i3-msg layout tabbed
 	sudo touch /root/.lock
-	sudo /usr/bin/xfce4-terminal --class "root";exit
+	sudo /usr/bin/xfce4-terminal --role "root";exit
 else 
 	rm /root/.lock
 fi
