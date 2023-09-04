@@ -132,7 +132,7 @@ if [[ "${selection[*]} " =~ "picom" ]]; then
     mkdir $HOME/.config/picom 
     cp optional/picom.conf $HOME/.config/picom/picom.conf 
     #uncomment picom.conf line
-    sed -i '/picom.conf/s/^#//g' $HOME/.config/i3/config
+    sed -i '/#exec.*picom.conf/s/^#//g' $HOME/.config/i3/config
 fi 
 
 if [ "$wp" -eq 1 ]; then
