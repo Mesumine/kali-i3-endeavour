@@ -74,8 +74,7 @@ uname -a | grep parrot
 if [ $? -eq 0 ]; then
     sudo apt-get install -qq -y zsh i3-gaps
     chsh -s $(which zsh) $(whoami)
-    sudo chsh -s $(which zsh) root
-    if 
+    sudo chsh -s $(which zsh) root  
 fi 
 
 ## Basic Configuration
