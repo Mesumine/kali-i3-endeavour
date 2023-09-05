@@ -138,13 +138,6 @@ if [[ "${selection[*]} " =~ "picom" ]]; then
     uname -a | grep parrot
     if [ $? -eq 0 ]; then
         sed -i '/#exec.*picom.conf/s/$/ --no-vsync/' $HOME/.config/i3/config
-            fi 
-                fi 
-            fi 
-        fi 
-        fi 
-            fi 
-        fi 
     fi 
 fi 
 
