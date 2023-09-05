@@ -73,7 +73,9 @@ echo "${selection[@]}" |  xargs sudo apt-get install -qq -y
 uname -a | grep parrot
 if [ $? -eq 0 ]; then
     sudo apt-get install -qq -y zsh i3-gaps
+    chsh -s $(which zsh) $(whoami)
     sudo chsh -s $(which zsh) root
+    if 
 fi 
 
 ## Basic Configuration
@@ -133,6 +135,18 @@ if [[ "${selection[*]} " =~ "picom" ]]; then
     cp optional/picom.conf $HOME/.config/picom/picom.conf 
     #uncomment picom.conf line
     sed -i '/#exec.*picom.conf/s/^#//g' $HOME/.config/i3/config
+#This takes care of issues with vsync on parrot.
+    uname -a | grep parrot
+    if [ $? -eq 0 ]; then
+        sed -i '/#exec.*picom.conf/s/$/ --no-vsync/' $HOME/.config/i3/config
+            fi 
+                fi 
+            fi 
+        fi 
+        fi 
+            fi 
+        fi 
+    fi 
 fi 
 
 if [ "$wp" -eq 1 ]; then
