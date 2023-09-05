@@ -66,13 +66,18 @@ done
 ## update 
 sudo apt update 
 ## Install packages
-echo "${selection[@]}" |  xargs sudo apt-get install -qq -y >/dev/null 
+echo "Installing the following packages:"
+for item in "${selection[@]}";do 
+    echo "$item"
+done 
+echo "${selection[@]}" |  xargs sudo apt-get install -qq 1>/dev/null 
 
 #parrot specific configuration
 
 uname -a | grep parrot > /dev/null 
 if [ $? -eq 0 ]; then
-    sudo apt-get install -qq -y zsh i3-gaps > /dev/null 
+    echo -e "\nParrot detected, installing the following additional packages:\ni3-gaps\nzsh\nzsh-autosuggestions\nzsh-syntax-highlighting"
+    sudo apt-get install -qq -y zsh i3-gaps zsh-autosuggestions zsh-syntax-highlighting | 1>/dev/null
     chsh -s $(which zsh) $(whoami)
     sudo chsh -s $(which zsh) root  
 fi 
@@ -137,7 +142,7 @@ if [[ "${selection[*]} " =~ "picom" ]]; then
 #This takes care of issues with vsync on parrot.
     uname -a | grep parrot >/dev/null 
     if [ $? -eq 0 ]; then
-        sed -i '/#exec.*picom.conf/s/$/ --no-vsync/' $HOME/.config/i3/config
+        sed -i '/exec.*picom.conf/s/$/ --no-vsync/' $HOME/.config/i3/config
     fi 
 fi 
 
