@@ -76,8 +76,13 @@ echo "${selection[@]}" |  xargs sudo apt-get install -qq 1>/dev/null
 
 uname -a | grep parrot > /dev/null 
 if [ $? -eq 0 ]; then
-    echo -e "\nParrot detected, installing the following additional packages:\ni3-gaps\nzsh\nzsh-autosuggestions\nzsh-syntax-highlighting"
-    sudo apt-get install -qq -y zsh i3-gaps zsh-autosuggestions zsh-syntax-highlighting | 1>/dev/null
+    echo -e "\nParrot detected, updating apt sources for i3 and installing the following additional packages:\nzsh\nzsh-autosuggestions\nzsh-syntax-highlighting"
+    curl https://baltocdn.com/i3-window-manager/signing.asc | sudo apt-key add -
+    sudo apt install apt-transport-https -qq -y 
+    echo "deb https://baltocdn.com/i3-window-manager/i3/i3-autobuild/ all main" | sudo tee /etc/apt/sources.list.d/i3-autobuild.list >/dev/null 
+    sudo apt update 1>/dev/null 
+    sudo apt install i3
+    sudo apt-get install -qq -y zsh i3 zsh-autosuggestions zsh-syntax-highlighting | 1>/dev/null
     command -v zsh | sudo tee -a /etc/shells 
     sudo chsh -s $(which zsh) $(whoami)
     sudo chsh -s $(which zsh) root  
