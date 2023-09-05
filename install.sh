@@ -90,12 +90,12 @@ fi
 # ubuntu specific configuration 
 uname -a | grep ubuntu > /dev/null 
 if [ $? -eq 0 ]; then
-    echo -e "\nUbuntu detected, installing the following additional packages:\ni3 (from ppa)\nzsh\nzsh-autosuggestions\nzsh-syntax-highlighting\npython3-pip\nfonts-font-awesome"
+    echo -e "\nUbuntu detected, installing the following additional packages:\ni3 (from ppa)\nzsh\nzsh-autosuggestions\nzsh-syntax-highlighting\npython3-pip\nfonts-font-awesome\ncurl"
     /usr/lib/apt/apt-helper download-file https://debian.sur5r.net/i3/pool/main/s/sur5r-keyring/sur5r-keyring_2023.02.18_all.deb keyring.deb SHA256:a511ac5f10cd811f8a4ca44d665f2fa1add7a9f09bef238cdfad8461f5239cc4
     sudo apt install ./keyring.deb
     echo "deb http://debian.sur5r.net/i3/ $(grep '^DISTRIB_CODENAME=' /etc/lsb-release | cut -f2 -d=) universe" | sudo tee /etc/apt/sources.list.d/sur5r-i3.list 1>/dev/null 
     sudo apt update 1>/dev/null 
-    sudo apt-get install -qq -y zsh i3 zsh-autosuggestions zsh-syntax-highlighting fonts-font-awesome python3-pip | 1>/dev/null
+    sudo apt-get install -qq -y zsh i3 zsh-autosuggestions zsh-syntax-highlighting fonts-font-awesome python3-pip curl | 1>/dev/null
     command -v zsh | sudo tee -a /etc/shells 
     sudo chsh -s $(which zsh) $(whoami)
     sudo chsh -s $(which zsh) root  
@@ -159,7 +159,7 @@ if [[ "${selection[*]} " =~ "picom" ]]; then
     #uncomment picom.conf line
     sed -i '/#exec.*picom.conf/s/^#//g' $HOME/.config/i3/config
 #This takes care of issues with vsync on parrot.
-    uname -a | grep parrot >/dev/null 
+uname -a | grep -E "(parrot|ubuntu)" >/dev/null 
     if [ $? -eq 0 ]; then
         sed -i '/exec.*picom.conf/s/$/ --no-vsync/' $HOME/.config/i3/config
     fi 
