@@ -78,7 +78,8 @@ uname -a | grep parrot > /dev/null
 if [ $? -eq 0 ]; then
     echo -e "\nParrot detected, installing the following additional packages:\ni3-gaps\nzsh\nzsh-autosuggestions\nzsh-syntax-highlighting"
     sudo apt-get install -qq -y zsh i3-gaps zsh-autosuggestions zsh-syntax-highlighting | 1>/dev/null
-    chsh -s $(which zsh) $(whoami)
+    command -v zsh | sudo tee -a /etc/shells 
+    sudo chsh -s $(which zsh) $(whoami)
     sudo chsh -s $(which zsh) root  
 fi 
 # ubuntu specific configuration 
@@ -90,7 +91,8 @@ if [ $? -eq 0 ]; then
     echo "deb http://debian.sur5r.net/i3/ $(grep '^DISTRIB_CODENAME=' /etc/lsb-release | cut -f2 -d=) universe" | sudo tee /etc/apt/sources.list.d/sur5r-i3.list 1>/dev/null 
     sudo apt update 1>/dev/null 
     sudo apt-get install -qq -y zsh i3 zsh-autosuggestions zsh-syntax-highlighting fonts-font-awesome python3-pip | 1>/dev/null
-    chsh -s $(which zsh) $(whoami)
+    command -v zsh | sudo tee -a /etc/shells 
+    sudo chsh -s $(which zsh) $(whoami)
     sudo chsh -s $(which zsh) root  
 fi 
 
