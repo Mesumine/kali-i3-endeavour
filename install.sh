@@ -30,7 +30,7 @@ usage()
 }
 
 
-while getopts "habc:mvVw" opt; do 
+while getopts "habc:mvw" opt; do 
     case ${opt} in 
         h) usage  && exit 1
         ;;
@@ -66,13 +66,13 @@ done
 ## update 
 sudo apt update 
 ## Install packages
-echo "${selection[@]}" |  xargs sudo apt-get install -qq -y
+echo "${selection[@]}" |  xargs sudo apt-get install -qq -y >/dev/null 
 
 #parrot specific configuration
 
-uname -a | grep parrot
+uname -a | grep parrot > /dev/null 
 if [ $? -eq 0 ]; then
-    sudo apt-get install -qq -y zsh i3-gaps
+    sudo apt-get install -qq -y zsh i3-gaps > /dev/null 
     chsh -s $(which zsh) $(whoami)
     sudo chsh -s $(which zsh) root  
 fi 
@@ -135,7 +135,7 @@ if [[ "${selection[*]} " =~ "picom" ]]; then
     #uncomment picom.conf line
     sed -i '/#exec.*picom.conf/s/^#//g' $HOME/.config/i3/config
 #This takes care of issues with vsync on parrot.
-    uname -a | grep parrot
+    uname -a | grep parrot >/dev/null 
     if [ $? -eq 0 ]; then
         sed -i '/#exec.*picom.conf/s/$/ --no-vsync/' $HOME/.config/i3/config
     fi 
@@ -145,12 +145,12 @@ if [ "$wp" -eq 1 ]; then
     echo -e "\nConfiguring root wallpaper change on focus"
     pip3 install -q i3ipc
 
-    sudo grep -q "role \"root\"" /root/.zshrc
+    sudo grep -q "role \"root\"" /root/.zshrc >/dev/null 
     if [[ "$?" -eq 0 ]]; then
         echo "rootwp already insterted into /root/.zshrc"
         return 1
     else    
-        cat optional/rootwp/rootshell.txt | sudo tee -a /root/.zshrc
+        cat optional/rootwp/rootshell.txt | sudo tee -a /root/.zshrc >/dev/null 
         cp optional/rootwp/i3-watch.py $HOME/.config/i3/scripts/i3-watch.py
         chmod 775 $HOME/.config/i3/scripts/i3-watch.py 
         sudo chown root:root $HOME/.config/i3/scripts/i3-watch.py 
