@@ -70,7 +70,7 @@ echo "Installing the following packages:"
 for item in "${selection[@]}";do 
     echo "$item"
 done 
-echo "${selection[@]}" |  xargs sudo apt-get install -qq 1>/dev/null 
+echo "${selection[@]}" |  xargs sudo apt-get install -qq 
 
 #parrot specific configuration
 
@@ -82,7 +82,7 @@ if [ $? -eq 0 ]; then
     echo "deb https://baltocdn.com/i3-window-manager/i3/i3-autobuild/ all main" | sudo tee /etc/apt/sources.list.d/i3-autobuild.list >/dev/null 
     sudo apt update 1>/dev/null 
     sudo apt install i3
-    sudo apt-get install -qq -y zsh i3 zsh-autosuggestions zsh-syntax-highlighting | 1>/dev/null
+    sudo apt-get install -qq -y zsh i3 zsh-autosuggestions zsh-syntax-highlighting
     command -v zsh | sudo tee -a /etc/shells 
     sudo chsh -s $(which zsh) $(whoami)
     sudo chsh -s $(which zsh) root  
@@ -95,7 +95,7 @@ if [ $? -eq 0 ]; then
     sudo apt install ./keyring.deb
     echo "deb http://debian.sur5r.net/i3/ $(grep '^DISTRIB_CODENAME=' /etc/lsb-release | cut -f2 -d=) universe" | sudo tee /etc/apt/sources.list.d/sur5r-i3.list 1>/dev/null 
     sudo apt update 1>/dev/null 
-    sudo apt-get install -qq -y zsh i3 zsh-autosuggestions zsh-syntax-highlighting fonts-font-awesome python3-pip curl | 1>/dev/null
+    sudo apt-get install -qq -y zsh i3 zsh-autosuggestions zsh-syntax-highlighting fonts-font-awesome python3-pip curl 
     command -v zsh | sudo tee -a /etc/shells 
     sudo chsh -s $(which zsh) $(whoami)
     sudo chsh -s $(which zsh) root  
